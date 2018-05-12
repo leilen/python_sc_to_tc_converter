@@ -3,6 +3,9 @@ import os
 import enum
 import sys
 
+
+s2t_dic = {}
+t2s_dic = {}
 # 타입 구분을 위한 Enum
 class CCType(enum.Enum):
     s2t = 's2t'
@@ -25,6 +28,12 @@ def convert(text : str , dic : dict):
 
 # dict.json파일에서 간체,번체를 읽어와 dictionary로 변환하는 함수
 def loadDic(type : CCType):
+    global s2t_dic
+    global t2s_dic
+    if type.name == 's2t' and len(s2t_dic) > 0:
+        return s2t_dic
+    if type.name == 't2s' and len(t2s_dic) > 0:
+        return t2s_dic
     with open('{}/dict.json'.format(os.path.dirname(os.path.abspath( __file__ ))), 'r') as f:
         return_json = json.load(f)
         dic = {}
@@ -37,11 +46,13 @@ def loadDic(type : CCType):
             for i,c in enumerate(return_json['sc']):
                 if c not in dic:
                     dic[c] = return_json['tc'][i]
+            s2t_dic = dic
 
         elif type == CCType.t2s:
             for i,c in enumerate(return_json['tc']):
                 if c not in dic:
                     dic[c] = return_json['sc'][i]
+            t2s_dic = dic
         return dic
 
 # dic파일 체크하는 함수
