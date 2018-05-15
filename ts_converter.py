@@ -22,8 +22,9 @@ def t2s(text : str):
 # 실질적으로 변환을 하는 함수
 def convert(text : str , dic : dict):
     returnString = ''
-    for c in text:
-        returnString += dic[c] if c in dic else c
+    if type(text) is str:
+        for c in text:
+            returnString += dic[c] if c in dic else c
     return returnString
 
 # dict.json파일에서 간체,번체를 읽어와 dictionary로 변환하는 함수
